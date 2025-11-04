@@ -1,0 +1,112 @@
+services:
+  # 🚀 Banco de dados Postgres (Render cria automaticamente)
+  - type: pserv
+    name: edigital-db
+    env: docker
+    plan: starter
+    dockerfilePath: ./db/Dockerfile
+    autoDeploy: false
+
+  # 🚀 Redis (Render tem suporte nativo)
+  - type: redis
+    name: edigital-redis
+    plan: starter
+
+  # 🔐 Auth Service
+  - type: web
+    name: edigital-auth-service
+    env: docker
+    dockerfilePath: ./auth/Dockerfile
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: edigital-redis
+          property: connectionString
+    plan: starter
+    autoDeploy: true
+
+  # 👥 Users Service
+  - type: web
+    name: users-service
+    env: docker
+    dockerfilePath: ./users/Dockerfile
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: edigital-redis
+          property: connectionString
+      - key: DATABASE_URL
+        fromService:
+          type: pserv
+          name: edigital-db
+          property: connectionString
+      - key: DB_USER
+        value: postgres
+      - key: DB_PASSWORD
+        value: Veno@2021
+      - key: DB_NAME
+        value: edigital
+    buildCommand: npm install
+    startCommand: sh -c "npm run typeorm migration:run && npm run start:dev"
+
+  # 🎓 Academic Service
+  - type: web
+    name: academic-service
+    env: docker
+    dockerfilePath: ./academic/Dockerfile
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: edigital-redis
+          property: connectionString
+      - key: DATABASE_URL
+        fromService:
+          type: pserv
+          name: edigital-db
+          property: connectionString
+      - key: DB_USER
+        value: postgres
+      - key: DB_PASSWORD
+        value: Veno@2021
+      - key: DB_NAME
+        value: edigital
+    buildCommand: npm install
+    startCommand: sh -c "npm run typeorm migration:run && npm run start:dev"
+
+  # 🧩 Geral Service
+  - type: web
+    name: geral-service
+    env: docker
+    dockerfilePath: ./geral/Dockerfile
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: edigital-redis
+          property: connectionString
+      - key: DATABASE_URL
+        fromService:
+          type: pserv
+          name: edigital-db
+          property: connectionString
+    buildCommand: npm install
+    startCommand: sh -c "npm run typeorm migration:run && npm run start:dev"
+
+  # 🌐 App Gateway
+  - type: web
+    name: app-gateway
+    env: docker
+    dockerfilePath: ./app-gateway/Dockerfile
+    envVars:
+      - key: USERS_SERVICE_URL
+        value: https://users-service.onrender.com
+      - key: AUTH_SERVICE_URL
+        value: https://edigital-auth-service.onrender.com
+      - key: INSTITUTION_SERVICE_URL
+        value: https://academic-service.onrender.com
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm run start:dev

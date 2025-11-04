@@ -1,0 +1,109 @@
+# ==========================================
+# 🌐 Node.js - Monorepo (Todos os serviços)
+# ==========================================
+
+# Dependências
+node_modules/
+**/node_modules/
+
+# Builds e compilações
+dist/
+**/dist/
+build/
+**/build/
+
+# Arquivos temporários
+tmp/
+temp/
+.cache/
+**/.cache/
+
+# Dados locais ou temporários
+data/
+**/data/
+
+
+# Logs
+logs/
+**/logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==========================================
+# ⚙️ Ambientes e configurações locais
+# ==========================================
+
+# Variáveis de ambiente
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Arquivos de configuração locais
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*.swo
+
+# ==========================================
+# 🐳 Docker & Banco de Dados
+# ==========================================
+
+# Arquivos gerados pelo Docker
+docker-compose.override.yml
+**/docker-compose.override.yml
+**/docker-compose.yml
+Dockerfile.*
+**/Dockerfile.*
+
+# Volumes e dados persistentes
+pgdata/
+pgadmindata/
+redis-data/
+**/pgdata/
+**/pgadmindata/
+**/redis-data/
+
+# ==========================================
+# 🧩 Sistema / SO
+# ==========================================
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+
+# Linux / Editor
+*.pid
+*.seed
+*.pid.lock
+*.orig
+
+# ==========================================
+# 🧪 Testes e relatórios
+# ==========================================
+
+coverage/
+**/coverage/
+.nyc_output/
+**/.nyc_output/
+jest-cache/
+**/jest-cache/
+jest-html-reporters-*.html
+
+# ==========================================
+# 🧰 Outros (segurança)
+# ==========================================
+
+# Chaves e certificados
+*.pem
+*.key
+*.crt
+
+# Arquivos de backup
+*.bak
+*.old
+*.tmp
